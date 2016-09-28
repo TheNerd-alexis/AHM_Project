@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IMessageDao">
+
+	<insert id="insertMessage" parameterType="java.util.HashMap">
+		insert into message 
+		(trainer_key, member_key, date, message)  
+		values 
+		(#{trainer_key}, 
+		#{member_key}, 
+		#{date}, 
+		#{message})
+	</insert>
+
+	<update id="updateMessage" parameterType="java.util.HashMap">
+		update message set
+		message =
+		#{message}
+		where member_key = #{member_key} and date = #{date}
+	</update>
+
+	<delete id="deleteMessage" parameterType="int">
+		delete from message
+		where MEMBER_KEY = #{member_key}
+	</delete>
+
+	<select id="selectOne" parameterType="int" resultType="java.util.HashMap">
+		select *
+		from message where MEMBER_KEY = #{member_key}
+	</select>
+
+<!-- psh -->
+	<select id="selectOnebyKeyNDate" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		select * from message where member_key = #{member_key} and
+		date = #{date}
+	</select>
+
+
+	<select id="selectAll" resultType="java.util.HashMap">
+		select * from message
+	</select>
+
+
+
+</mapper>

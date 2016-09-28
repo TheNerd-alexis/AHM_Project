@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IMenuListDao">
+
+	<insert id="insertMenuList" parameterType="java.util.HashMap">
+		insert into menulist (member_key, date, daymenu_key)
+		values(#{member_key}, #{date}, #{daymenu_key})
+	</insert>
+
+	<update id="updateMenuList" parameterType="java.util.HashMap">
+		update menulist set
+		daymenu_key = #{daymenu_key}
+		where
+		MEMBER_KEY = #{member_key} and DATE = #{date}
+	</update>
+
+	<delete id="deleteMenuList" parameterType="java.util.HashMap">
+		delete from menulist where MEMBER_KEY = #{member_key} and DATETIME = #{startdate} 
+	</delete>
+
+	<select id="selectOne" parameterType="int" resultType="java.util.HashMap">
+		select * from menulist where MEMBER_KEY = #{member_key}
+	</select>
+	
+	<select id="selectAll" resultType="java.util.HashMap">
+		select * from menulist
+	</select>
+	
+	<select id="selectOnebyKeyNDate" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select dm.daymenu_key
+			, dm.title
+			, dm.morning
+			, dm.lunch
+			, dm.dinner
+			, ml.member_key
+		from 
+			 daymenu dm 
+			,menulist ml
+			,member m
+
+		where  
+			ml.member_key = m.member_key
+			and dm.daymenu_key  = ml.daymenu_key 
+			and m.member_key = #{member_key} 
+			and DATE_FORMAT(ml.date,'%Y%m%d') = #{date}
+	</select>
+
+</mapper>

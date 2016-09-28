@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+	<context:component-scan base-package="service" />
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="username" value="elgrace316"></property>
+		<property name="password" value="park3918"></property>
+		<property name="url" value="jdbc:mysql://localhost/elgrace316"></property>
+		<property name="maxActive" value="8"></property>
+		<property name="maxIdle" value="8"></property>
+		<property name="minIdle" value="0"></property>
+		<property name="initialSize" value="0"></property>
+	</bean>
+
+
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="SqlSessionFactory">
+		<property name="mapperLocations" value="classpath:dao/mapper/*.xml"></property>
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="memberDao">
+		<property name="mapperInterface" value="dao.IMemberDao"></property>
+		<property name="sqlSessionFactory" ref="SqlSessionFactory"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="trainerDao">
+		<property name="mapperInterface" value="dao.ITrainerDao"></property>
+		<property name="sqlSessionFactory" ref="SqlSessionFactory"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="menuListDao">
+		<property name="mapperInterface" value="dao.IMenuListDao"></property>
+		<property name="sqlSessionFactory" ref="SqlSessionFactory"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="exprogramListDao">
+		<property name="mapperInterface" value="dao.IExProgramListDao"></property>
+		<property name="sqlSessionFactory" ref="SqlSessionFactory"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="bodyInfoDao">
+		<property name="mapperInterface" value="dao.IBodyInfoDao"></property>
+		<property name="sqlSessionFactory" ref="SqlSessionFactory"></property>
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="messageDao">
+		<property name="mapperInterface" value="dao.IMessageDao"></property>
+		<property name="sqlSessionFactory" ref="SqlSessionFactory"></property>
+	</bean>
+
+</beans>

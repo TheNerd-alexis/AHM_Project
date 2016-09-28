@@ -1,0 +1,213 @@
+<html>
+<head>
+	<title></title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+	<script src="./Chart.min.js"></script>
+	<style type="text/css">
+		.doughnut-legend {
+			list-style: none;
+			position: absolute;
+			right: 8px;
+			top: 0;
+		}
+		.doughnut-legend li {
+			display: block;
+			padding-left: 30px;
+			position: relative;
+			margin-bottom: 4px;
+			border-radius: 5px;
+			padding: 2px 8px 2px 28px;
+			font-size: 14px;
+			cursor: default;
+			-webkit-transition: background-color 200ms ease-in-out;
+			-moz-transition: background-color 200ms ease-in-out;
+			-o-transition: background-color 200ms ease-in-out;
+			transition: background-color 200ms ease-in-out;
+		}
+		.doughnut-legend li:hover {
+			background-color: #fafafa;
+		}
+		.doughnut-legend li span {
+			display: block;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 20px;
+			height: 100%;
+			border-radius: 5px;
+		}
+		.polararea-legend {
+			list-style: none;
+			position: absolute;
+			right: 300px;
+			top: 300px;
+		}
+		.polararea-legend li {
+			display: block;
+			padding-left: 30px;
+			position: relative;
+			margin-bottom: 4px;
+			border-radius: 5px;
+			padding: 2px 8px 2px 28px;
+			font-size: 14px;
+			cursor: default;
+			-webkit-transition: background-color 200ms ease-in-out;
+			-moz-transition: background-color 200ms ease-in-out;
+			-o-transition: background-color 200ms ease-in-out;
+			transition: background-color 200ms ease-in-out;
+		}
+		.polararea-legend li:hover {
+			background-color: #fafafa;
+		}
+		.polararea-legend li span {
+			display: block;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 20px;
+			height: 100%;
+			border-radius: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div style="width: 60%">
+		<canvas id="canvas" height="450" width="600"></canvas>
+	</div>
+	<br />
+	<input type="button" id="btnAdd" value="add data">
+	<input type="button" id="btnPolar" value="view polar-area">
+	<input type="button" id="btnPie" value="view pie">
+	<input type="button" id="btnDoughnut" value="view doughnut">
+
+	<script type="text/javascript">
+		var randomScalingFactor = function(){ return Math.round(Math.random()*300)};
+		var chartData = [
+				{
+					value: randomScalingFactor(),
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "Red"
+				},
+				{
+					value: randomScalingFactor(),
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Green"
+				},
+				{
+					value: randomScalingFactor(),
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				{
+					value: randomScalingFactor(),
+					color: "#949FB1",
+					highlight: "#A8B3C5",
+					label: "Grey"
+				},
+				{
+					value: randomScalingFactor(),
+					color: "#4D5360",
+					highlight: "#616774",
+					label: "Dark Grey"
+				}
+
+			];
+
+		var chart = null;
+		var canvas = null;
+		var ctx = null;
+		var legendHolder = null;
+		var helpers = Chart.helpers;
+		$(function() {
+			canvas = document.getElementById("canvas");
+			legendHolder = document.createElement('div');
+			ctx = canvas.getContext("2d");
+			chart = new Chart(ctx).PolarArea(chartData, {
+				scaleShowLabelBackdrop : true,
+				scaleBackdropColor : "rgba(255,255,255,0.75)",
+				scaleBeginAtZero : true,
+				scaleBackdropPaddingY : 2,
+				scaleBackdropPaddingX : 2,
+				scaleShowLine : true,
+				segmentShowStroke : true,
+				segmentStrokeColor : "#fff",
+				segmentStrokeWidth : 2,
+				animationSteps : 100,
+				animationEasing : "easeOutBounce",
+				animateRotate : true,
+				animateScale : false,
+				responsive: true,
+				onAnimationProgress: function() {
+					console.log("onAnimationProgress");
+				},
+				onAnimationComplete: function() {
+					console.log("onAnimationComplete");
+				}
+			});
+
+			legendHolder.innerHTML = chart.generateLegend();
+			helpers.each(legendHolder.firstChild.childNodes, function(legendNode, index){
+				helpers.addEvent(legendNode, 'mouseover', function(){
+					var activeSegment = chart.segments[index];
+					activeSegment.save();
+					activeSegment.fillColor = activeSegment.highlightColor;
+					chart.showTooltip([activeSegment]);
+					activeSegment.restore();
+				});
+			});
+			helpers.addEvent(legendHolder.firstChild, 'mouseout', function(){
+				chart.draw();
+			});
+			canvas.parentNode.appendChild(legendHolder.firstChild);
+		});
+
+		$("input#btnAdd").on("click", function() {
+			chart.addData({
+				value: randomScalingFactor(),
+				color: "#B48EAD",
+				highlight: "#C69CBE",
+				label: "Purple"
+			});
+		});
+
+		$("input#btnPolar").on("click", function() {
+			chart.destroy();
+			chart = new Chart(ctx).PolarArea(chartData, {
+				segmentStrokeColor: "#000000",
+				animation: true,
+				responsive: true,
+			});
+		});
+		
+		$("input#btnPie").on("click", function() {
+			chart.destroy();
+			chart = new Chart(ctx).Pie(chartData, {
+				animateScale: true,
+				animation: true,
+				responsive: true,
+			});
+		});
+
+		$("input#btnDoughnut").on("click", function() {
+			chart.destroy();
+			chart = new Chart(ctx).Doughnut(chartData, {
+				animateScale: true,
+				animation: true,
+				responsive: true,
+			});
+		});
+
+		$("canvas").on("click", function(e) {
+			var activePoints = chart.getSegmentsAtEvent(e);
+			console.log(activePoints);
+			for(var i in activePoints) {
+				console.log(activePoints[i].value);
+			}
+		});
+
+	</script>
+</body>
+</html>

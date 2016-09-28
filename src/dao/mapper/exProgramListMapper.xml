@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IExProgramListDao">
+    <insert id="insertExProgramList" parameterType="java.util.HashMap">
+        insert into exprogramlist (member_key, date, exercise_key) 
+        values (#{member_key}, #{date}, #{exercise_key})
+    </insert>
+    
+    <update id="updateExProgramList" parameterType="java.util.HashMap">
+        update exprogramlist set
+        exercise_key = #{exercise_key}
+        where
+        member_key = #{member_key} and date = #{date}
+    </update>
+    
+    <delete id="deleteExProgramList" parameterType="java.util.HashMap">
+        delete from menulist where MEMBER_KEY = #{member_key} and date = #{date}
+    </delete>
+    
+    <select id = "selectOne" parameterType="int"  resultType="java.util.HashMap">
+        select * from memberlist where MEMBER_KEY = #{member_key}
+        
+    </select>
+    
+    <select id="selectOnebyKeyNDate" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select 	ex.ex_title
+				, ex.content
+				, epl.member_key 
+				, ex.exercise_key 
+ 		from 	member m
+				,exercise ex
+				,exprogramlist epl
+	  where		m.member_key = epl.member_key
+				and epl.exercise_key = ex.exercise_key
+				and m.member_key = #{member_key} 
+				and DATE_FORMAT(epl.date,'%Y%m%d') = #{date}
+	</select>
+    
+    
+    <select id="selectAll" resultType="java.util.HashMap">
+		select * from exprogramlist
+	</select>
+    
+    
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IBodyInfoDao">
+
+    <insert id="insertBodyInfo" parameterType="java.util.HashMap">
+        insert into bodyinfo (member_key, weight, height, fat_rate, muscle_rate, water_rate, mass_index, date)
+        values(#{member_key}, #{weight}, #{height}, #{fat_rate}, #{muscle_rate}, #{water_rate}, #{mass_index}, #{date})
+    </insert>
+    
+    <update id="updateBodyInfo" parameterType="java.util.HashMap">
+        update bodyinfo set WEIGHT =#{weight}, HEIGHT =#{height}, FAT_RATE = #{fat_rate}, MUSCLE_RATE = #{muscle_rate}, WATER_RATE = #{water_rate}, 
+        	MASS_INDEX = #{mass_index}
+		where member_key = #{member_key} and date = #{date}
+    </update>
+    
+    <delete id="deleteBodyInfo" parameterType="int">
+        select * from bodyinfo where BODYINFO_KEY = #{bodyinfo_key}
+    </delete>
+    
+    <select id="selectOne" parameterType="int" resultType="java.util.HashMap">
+        select * from bodyinfo where BODYINFO_KEY = #{bodyinfo} 
+    </select>
+    
+    <select id="selectAll" resultType="java.util.HashMap">
+		select * from bodyinfo
+	</select>
+	
+	<select id="selectOnebyKeyNDate" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+               select *
+ 			from 
+			 	bodyinfo bi
+				,member m
+ 			where 
+  				m.member_key = bi.member_key
+				and bodyinfo_key = 
+				(select max(bodyinfo_key) from bodyinfo where member_key = #{member_key} and DATE_FORMAT(date,'%Y%m%d') = #{date});
+    </select>
+
+	<select id="selectWeightOne" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select avg(weight) as weekone FROM bodyinfo 
+		where date >= date_add(#{date},interval -6 day) and member_key=#{member_key}; 
+	</select>
+	<select id="selectWeightTwo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select avg(weight) as weektwo FROM bodyinfo 
+		where date_add(#{date},interval -7 day) >= date and date >= date_add(#{date},interval -13 day) and member_key=#{member_key};
+	</select>
+	<select id="selectWeightThree" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select avg(weight) as weekthree FROM bodyinfo 
+		where date_add(#{date},interval -14 day) >= date and date >= date_add(#{date},interval -20 day) and member_key=#{member_key}; 
+	</select>
+	<select id="selectWeightFour" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select avg(weight) as weekfour FROM bodyinfo 
+		where date_add(#{date},interval -21 day) >= date and date >= date_add(#{date},interval -27 day) and member_key=#{member_key}; 
+	</select>
+	
+</mapper>

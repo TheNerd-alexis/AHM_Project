@@ -1,0 +1,142 @@
+[필수 쿼리]
+
+create table member (
+	member_key int primary key auto_increment, 
+	member_id varchar(20) not null, 
+	member_name varchar(30) not null, 
+	member_pwd varchar(30) not null, 
+	member_email varchar(50) not null,
+	member_phone varchar(50) not null,
+	member_sex int not null default 1,
+	member_type int not null default 1,
+	member_joindate timestamp not null default current_timestamp,
+	member_startate datetime,
+	member_endate datetime,
+	member_payment int default 0
+	);
+
+create table trainer (trainer_key int primary key auto_increment, 
+	trainer_id varchar(20) not null, 
+	trainer_name varchar(30) not null, 
+	trainer_pwd varchar(30) not null, 
+	trainer_email varchar(50) not null,
+	trainer_phone varchar(50) not null,
+	trainer_sex int not null default 1,
+	trainer_joindate timestamp not null default current_timestamp
+	);
+
+
+create table bodyinfo (
+	bodyinfo_key int primary key  auto_increment not null ,
+	member_key int not null,
+	weight double,
+	height double,
+	fat_rate double,
+	muscle_rate double,
+	water_rate double,
+	mass_index double,
+	date datetime
+	);
+
+create table weekweight (
+	weekweight_key int primary key  auto_increment not null ,
+	member_key int not null,
+	weight double,
+	height double,
+	fat_rate double,
+	muscle_rate double,
+	water_rate double,
+	mass_index double,
+	date datetime
+	);
+
+create table daymenu(
+	daymenu_key int primary key auto_increment,
+	title varchar(50) not null,
+	morning varchar(50),
+	morningc double,
+	lunch varchar(50),
+	lunchc double,
+	dinner varchar(50),
+	dinnerc double
+	);
+
+create table exercise(
+	exercise_key int primary key auto_increment,
+	ex_title varchar(50) not null,
+	content varchar(200),
+	contentc double
+	);
+
+create table exprogramlist(
+	exprogramlist_key int primary key auto_increment,
+	member_key int not null,
+	date datetime not null,
+	exercise_key int not null
+	);
+
+create table menulist(
+	menulist_key int primary key auto_increment,
+	member_key int not null,
+	date datetime not null,
+	daymenu_key int not null
+	);
+
+create table message(
+	message_key int primary key auto_increment,
+	trainer_key int not null,
+	member_key int not null,
+	date datetime not null,
+	message varchar(200)
+	);
+
+insert into daymenu values(0,'다이어트 식단 1','계란x1, 바나나x1','200','닭가슴살x500g, 샐러드x200g','500','된장찌개, 사과x1','200');
+insert into daymenu values(0,'다이어트 식단 2','계란x1, 사과x1','100','닭가슴살x500g, 사과x1','400','청국장, 사과x1','300');
+insert into daymenu values(0,'다이어트 식단 3','계란x1, 감자x1','200','닭가슴살x500g, 바나나x1','600','제육볶음, 사과x1','100');
+insert into daymenu values(0,'다이어트 식단 4','계란x1, 고구마x1','250','닭가슴살x500g, 고구마x1','550','돈까스, 사과x1','100');
+insert into daymenu values(0,'근육강화 식단 1','계란x1, 아몬드x100g','200','된장찌개, 사과x1','500','닭가슴살x500g, 샐러드x200g','200');
+insert into daymenu values(0,'근육강화 식단 2','계란x1, 우유x500g','100','청국장, 사과x1','400','닭가슴살x500g, 사과x1','300');
+insert into daymenu values(0,'근육강화 식단 3','계란x1, 닭가슴살x500g','200','제육볶음, 사과x1','600','닭가슴살x500g, 바나나x1','100');
+insert into daymenu values(0,'근육강화 식단 4','계란x1, 땅콩x500g','250','돈까스, 사과x1','550','닭가슴살x500g, 고구마x1','100');
+
+insert into exercise values (0,'근육강화 운동 1','(푸시업 20회 , 싯업 20회 , 스쿼트 30회, 플랭크 45초) X 5 set',300);
+insert into exercise values (0,'근육강화 운동 2','(푸시업 20회 , 싯업 20회 , 스쿼트 30회, 플랭크 45초) X 7 set',500);
+insert into exercise values (0,'다이어트 운동 1','러닝머신 30분, (푸시업 20회 , 싯업 20회 , 스쿼트 30회, 플랭크 45초) X 3set ',500);
+insert into exercise values (0,'다이어트 운동 2','러닝머신 45분, (푸시업 20회 , 싯업 20회 , 스쿼트 30회, 플랭크 45초
+) X 5set',700);
+
+--------------------------------
+
+[chart.js 테스트를 위한 쿼리]
+
+insert into bodyinfo values(0, 1, 60, 178, 10, 12, 20, 18, '2016-09-12');
+insert into bodyinfo values(0, 1, 61, 178, 10, 12, 20, 18, '2016-09-11');
+insert into bodyinfo values(0, 1, 62, 178, 10, 12, 20, 18, '2016-09-10');
+insert into bodyinfo values(0, 1, 63, 178, 10, 12, 20, 18, '2016-09-09');
+insert into bodyinfo values(0, 1, 64, 178, 10, 12, 20, 18, '2016-09-08');
+insert into bodyinfo values(0, 1, 65, 178, 10, 12, 20, 18, '2016-09-07');
+insert into bodyinfo values(0, 1, 66, 178, 10, 12, 20, 18, '2016-09-06');
+
+insert into bodyinfo values(0, 1, 70, 178, 10, 12, 20, 18, '2016-09-05');
+insert into bodyinfo values(0, 1, 71, 178, 10, 12, 20, 18, '2016-09-04');
+insert into bodyinfo values(0, 1, 72, 178, 10, 12, 20, 18, '2016-09-03');
+insert into bodyinfo values(0, 1, 73, 178, 10, 12, 20, 18, '2016-09-02');
+insert into bodyinfo values(0, 1, 74, 178, 10, 12, 20, 18, '2016-09-01');
+insert into bodyinfo values(0, 1, 75, 178, 10, 12, 20, 18, '2016-08-31');
+insert into bodyinfo values(0, 1, 76, 178, 10, 12, 20, 18, '2016-08-30');
+
+insert into bodyinfo values(0, 1, 90, 178, 10, 12, 20, 18, '2016-08-29');
+insert into bodyinfo values(0, 1, 91, 178, 10, 12, 20, 18, '2016-08-28');
+insert into bodyinfo values(0, 1, 92, 178, 10, 12, 20, 18, '2016-08-27');
+insert into bodyinfo values(0, 1, 93, 178, 10, 12, 20, 18, '2016-08-26');
+insert into bodyinfo values(0, 1, 94, 178, 10, 12, 20, 18, '2016-08-25');
+insert into bodyinfo values(0, 1, 95, 178, 10, 12, 20, 18, '2016-08-24');
+insert into bodyinfo values(0, 1, 96, 178, 10, 12, 20, 18, '2016-08-23');
+
+insert into bodyinfo values(0, 1, 100, 178, 10, 12, 20, 18, '2016-08-22');
+insert into bodyinfo values(0, 1, 101, 178, 10, 12, 20, 18, '2016-08-21');
+insert into bodyinfo values(0, 1, 102, 178, 10, 12, 20, 18, '2016-08-20');
+insert into bodyinfo values(0, 1, 103, 178, 10, 12, 20, 18, '2016-08-19');
+insert into bodyinfo values(0, 1, 104, 178, 10, 12, 20, 18, '2016-08-18');
+insert into bodyinfo values(0, 1, 105, 178, 10, 12, 20, 18, '2016-08-17');
+insert into bodyinfo values(0, 1, 106, 178, 10, 12, 20, 18, '2016-08-16');

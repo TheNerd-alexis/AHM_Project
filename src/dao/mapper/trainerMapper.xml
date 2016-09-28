@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.ITrainerDao">
+	<select id="selectOnebyId" parameterType="String" resultType="java.util.HashMap">
+		select * from trainer where trainer_id = #{trainer_id}
+	</select>
+
+	<select id="selectOnebyKey" parameterType="int" resultType="java.util.HashMap">
+		select * from trainer where trainer_key = #{trainer_key}
+	</select>
+
+	<insert id="insertTrainer" parameterType="java.util.HashMap">
+		insert into trainer (trainer_id, trainer_name, trainer_pwd,
+		trainer_email, trainer_phone, trainer_sex)
+		values(#{id}, #{name}, #{pwd},
+		#{email}, #{phone}, #{sex})
+	</insert>
+
+	<update id="updateTrainer" parameterType="java.util.HashMap">
+		update trainer set
+		TRAINER_PWD =#{trainer_pwd}, TRAINER_EMAIL = #{trainer_email},
+		TRAINER_PHONE = #{trainer_phone}, TRAINER_SEX = #{trainer_sex},
+		TRAINER_JOINDATE = #{trainer_joindate},
+		where TRAINER_ID =
+		#{trainer_id} and TRAINER_NAME= #{trainer_name}
+	</update>
+
+	<delete id="deleteTrainer" parameterType="int">
+		delete from member where
+		TRAINER_ID = #{trainer_id}
+	</delete>
+
+</mapper>
